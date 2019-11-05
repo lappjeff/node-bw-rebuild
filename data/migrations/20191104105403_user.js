@@ -17,9 +17,10 @@ exports.up = function(knex) {
 		tbl.string("goal").notNullable();
 		tbl.integer("age").notNullable();
 		tbl.decimal("current_weight").notNullable();
-		tbl.decimal("height").notNullable()
-		tbl.json("user_macros")
+		tbl.decimal("height").notNullable();
+		tbl.json("user_macros");
 		tbl.timestamps(true, true);
+	});
 };
 
 exports.down = function(knex) {
