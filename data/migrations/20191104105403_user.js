@@ -17,15 +17,9 @@ exports.up = function(knex) {
 		tbl.string("goal").notNullable();
 		tbl.integer("age").notNullable();
 		tbl.decimal("current_weight").notNullable();
-		tbl.decimal("height");
+		tbl.decimal("height").notNullable()
+		tbl.json("user_macros")
 		tbl.timestamps(true, true);
-
-		tbl
-			.foreign("macro_id")
-			.references("user_macros.macro_id")
-			.onDelete("CASCADE")
-			.onUpdate("CASCADE");
-	});
 };
 
 exports.down = function(knex) {
