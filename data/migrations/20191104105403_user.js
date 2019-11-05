@@ -2,9 +2,15 @@ exports.up = function(knex) {
 	return knex.schema.createTable("users", tbl => {
 		tbl.increments("user_id").primary();
 
-		tbl.string("username").notNullable();
+		tbl
+			.string("username")
+			.notNullable()
+			.unique();
 		tbl.string("password").notNullable();
-		tbl.string("email").notNullable();
+		tbl
+			.string("email")
+			.notNullable()
+			.unique();
 		tbl.string("gender").notNullable();
 		tbl.string("name").notNullable();
 		tbl.string("activity_lvl").notNullable();
@@ -15,13 +21,10 @@ exports.up = function(knex) {
 		tbl.timestamps(true, true);
 
 		tbl
-			.foreign("user_macro_id")
-			.references("user_macros.user_macro_id")
-			.unique()
+			.foreign("macro_id")
+			.references("user_macros.macro_id")
 			.onDelete("CASCADE")
 			.onUpdate("CASCADE");
-
-		tbl.unique(["username", "email"]);
 	});
 };
 
