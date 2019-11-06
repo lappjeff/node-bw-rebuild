@@ -6,7 +6,7 @@ router.post("/", async (req, res) => {
 	try {
 		const user = await Users.createUser(req.body);
 
-		res.status(201).json({ message: "User created", user });
+		res.status(201).json({ message: "User created", id: user });
 	} catch (error) {
 		res.status(500).json({ message: "User could not be created", error });
 	}

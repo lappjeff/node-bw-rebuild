@@ -19,7 +19,9 @@ async function createUser(user) {
 
 	const [id] = await db("users").insert(finalUser, "id");
 
-	return id;
+	return db("users")
+		.where({ user_id: id })
+		.first();
 }
 
 function getCurrentUser() {}
