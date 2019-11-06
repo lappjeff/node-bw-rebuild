@@ -1,6 +1,6 @@
 const helpers = require("./model-helpers");
 
-test("calculateMacros returns accurate macros", () => {
+it("should calculate and return accurate macros", () => {
 	const testUser = {
 		gender: "F",
 		activity_lvl: "1-2 days",

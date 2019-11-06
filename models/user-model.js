@@ -17,12 +17,13 @@ async function createUser(user) {
 	const userMacros = calculateMacros(user);
 	const finalUser = { ...user, user_macros: JSON.stringify(userMacros) };
 
-	const newUser = await db("users").insert(finalUser);
+	const [id] = await db("users").insert(finalUser, "id");
 
-	return newUser;
+	return id;
 }
 
 function getCurrentUser() {}
+
 function findUserById(user_id) {
 	return db("users")
 		.where({ user_id })
