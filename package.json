@@ -4,13 +4,14 @@
 	"description": "",
 	"main": "index.js",
 	"scripts": {
-		"test": "jest",
+		"test": "cross-env DB_ENV=testing jest --watch",
 		"server": "nodemon index.js"
 	},
 	"keywords": [],
 	"author": "",
 	"license": "ISC",
 	"dependencies": {
+		"cross-env": "^6.0.3",
 		"express": "^4.17.1",
 		"knex": "^0.20.1",
 		"knex-cleaner": "^1.3.0",
