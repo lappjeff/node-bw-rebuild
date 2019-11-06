@@ -16,11 +16,11 @@ function deleteUser(user_id) {}
 async function createUser(user) {
 	const userMacros = calculateMacros(user);
 
-	const finalMacros = { ...user, user_macros: userMacros };
+	const finalUser = { ...user, user_macros: userMacros };
 
-	const user = await db("users").insert(finalUser);
-	console.log(user);
-	return user;
+	const newUser = await db("users").insert(finalUser);
+
+	return newUser;
 }
 
 function getCurrentUser() {}
