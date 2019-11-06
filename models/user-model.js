@@ -15,8 +15,7 @@ function deleteUser(user_id) {}
 
 async function createUser(user) {
 	const userMacros = calculateMacros(user);
-
-	const finalUser = { ...user, user_macros: userMacros };
+	const finalUser = { ...user, user_macros: JSON.stringify(userMacros) };
 
 	const newUser = await db("users").insert(finalUser);
 
