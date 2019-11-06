@@ -1,4 +1,4 @@
-const helpers = require("./model-helpers");
+const { calculateMacros } = require("./calculateMacros");
 
 it("should calculate and return accurate macros", () => {
 	const testUser = {
@@ -10,7 +10,7 @@ it("should calculate and return accurate macros", () => {
 		current_weight: 151
 	};
 
-	const macros = helpers.calculateMacros(testUser);
+	const macros = calculateMacros(testUser);
 
 	expect(macros).toEqual({
 		dailyCalories: 1775,

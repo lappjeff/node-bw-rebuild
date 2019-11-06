@@ -1,4 +1,4 @@
-const validators = require("../validation/user-validators");
+const validators = require("./user-validator");
 
 module.exports = {
 	calculateMacros
