@@ -3,8 +3,6 @@ const knex = require("knex");
 const knexConfig = require("./knexfile");
 const userRouter = require("./routes/user/userRoutes.js");
 
-const db = knex(knexConfig.development);
-
 const server = express();
 
 server.use(express.json());
