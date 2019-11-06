@@ -28,6 +28,7 @@ function calculateMacros(user) {
 	};
 
 	const validateUser = validators.validateUser(user);
+
 	if (validateUser.isValidUser) {
 		const heightArray = user.height.split("'");
 		const heightInches = heightArray[0] * 12 + parseInt(heightArray[1]);
@@ -38,15 +39,16 @@ function calculateMacros(user) {
 			user.age
 		);
 
-		const tdee =
+		const tdee = Math.floor(
 			bmr *
-			activityMultipliers[user.activity_lvl.toLowerCase()] *
-			goalMultipliers(user.goal.toLowerCase());
+				activityMultipliers[user.activity_lvl.toLowerCase()] *
+				goalMultipliers[user.goal.toLowerCase()]
+		);
 
 		const [dailyProtein, dailyCarbs, dailyFat] = [
-			tdee * 0.075,
-			tdee * 0.1,
-			tdee * 0.033
+			Math.floor(tdee * 0.075),
+			Math.floor(tdee * 0.1),
+			Math.floor(tdee * 0.033)
 		];
 
 		const userMacros = {
@@ -58,8 +60,7 @@ function calculateMacros(user) {
 
 		return userMacros;
 	} else {
-		return { errors: validateUser.errors };
+		console.log("Invalid user");
+		return validateUser.errors;
 	}
 }
-
-console.log(calculateMacros({}));

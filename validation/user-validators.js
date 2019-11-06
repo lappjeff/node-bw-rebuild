@@ -1,5 +1,3 @@
-const { Schema } = require("validate");
-
 module.exports = { validateUser };
 
 function validateUser(user) {
