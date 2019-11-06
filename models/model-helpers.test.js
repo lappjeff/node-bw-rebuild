@@ -2,11 +2,7 @@ const helpers = require("./model-helpers");
 
 test("calculateMacros returns accurate macros", () => {
 	const testUser = {
-		username: "testwoman",
-		password: "test",
-		email: "testwoman@gmail.com",
-		gender: "f",
-		name: "test woman",
+		gender: "F",
 		activity_lvl: "1-2 days",
 		goal: "moderate weight loss",
 		height: "5'10",
