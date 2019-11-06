@@ -27,40 +27,33 @@ function calculateMacros(user) {
 		"aggressive weight gain": 1.15
 	};
 
-	const validateUser = validators.validateUser(user);
+	const heightArray = user.height.split("'");
+	const heightInches = heightArray[0] * 12 + parseInt(heightArray[1]);
 
-	if (validateUser.isValidUser) {
-		const heightArray = user.height.split("'");
-		const heightInches = heightArray[0] * 12 + parseInt(heightArray[1]);
+	const bmr = bmrFormulas[user.gender.toLowerCase()](
+		user.current_weight,
+		heightInches,
+		user.age
+	);
 
-		const bmr = bmrFormulas[user.gender.toLowerCase()](
-			user.current_weight,
-			heightInches,
-			user.age
-		);
+	const tdee = Math.floor(
+		bmr *
+			activityMultipliers[user.activity_lvl.toLowerCase()] *
+			goalMultipliers[user.goal.toLowerCase()]
+	);
 
-		const tdee = Math.floor(
-			bmr *
-				activityMultipliers[user.activity_lvl.toLowerCase()] *
-				goalMultipliers[user.goal.toLowerCase()]
-		);
+	const [dailyProtein, dailyCarbs, dailyFat] = [
+		Math.floor(tdee * 0.075),
+		Math.floor(tdee * 0.1),
+		Math.floor(tdee * 0.033)
+	];
 
-		const [dailyProtein, dailyCarbs, dailyFat] = [
-			Math.floor(tdee * 0.075),
-			Math.floor(tdee * 0.1),
-			Math.floor(tdee * 0.033)
-		];
+	const userMacros = {
+		dailyCalories: tdee,
+		dailyProtein,
+		dailyCarbs,
+		dailyFat
+	};
 
-		const userMacros = {
-			dailyCalories: tdee,
-			dailyProtein,
-			dailyCarbs,
-			dailyFat
-		};
-
-		return userMacros;
-	} else {
-		console.log("Invalid user");
-		return validateUser.errors;
-	}
+	return userMacros;
 }
