@@ -36,20 +36,20 @@ function calculateMacros(user) {
 		user.age
 	);
 
-	const tdee = Math.floor(
+	const dailyCalories = Math.floor(
 		bmr *
 			activityMultipliers[user.activity_lvl.toLowerCase()] *
 			goalMultipliers[user.goal.toLowerCase()]
 	);
 
 	const [dailyProtein, dailyCarbs, dailyFat] = [
-		Math.floor(tdee * 0.075),
-		Math.floor(tdee * 0.1),
-		Math.floor(tdee * 0.033)
+		Math.floor(dailyCalories * 0.075),
+		Math.floor(dailyCalories * 0.1),
+		Math.floor(dailyCalories * 0.033)
 	];
 
 	const userMacros = {
-		dailyCalories: tdee,
+		dailyCalories,
 		dailyProtein,
 		dailyCarbs,
 		dailyFat
