@@ -9,6 +9,18 @@ function validateUser(user) {
 		"5-6 days",
 		"7 days"
 	]);
+
+	const validMealPlans = new Set([
+		"4 meals a day",
+		"3 meals a day",
+		"3 meals and 2 snacks a day"
+	]);
+
+	if (!user.meal_plan || !validMealPlans.has(user.meal_plan)) {
+		errors.push(
+			"Please provide a valid meal plan: '4 meals a day', '3 meals a day', or '3 meals and 2 snacks a day"
+		);
+	}
 	if (!user.username) {
 		errors.push("Please provide a username");
 	}
