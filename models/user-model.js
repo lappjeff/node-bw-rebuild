@@ -29,7 +29,11 @@ async function updateUser(user_id, updates) {
 		.first();
 }
 
-function deleteUser(user_id) {}
+async function deleteUser(user_id) {
+	await db("users")
+		.where({ user_id })
+		.del();
+}
 
 async function createUser(user) {
 	const userMacros = calculateMacros(user);

@@ -1,5 +1,3 @@
-const request = require("supertest");
-
 const Users = require("./user-model");
 const db = require("../data/dbConfig");
 
@@ -89,6 +87,21 @@ describe("users model tests", () => {
 				dailyCarbs: 168,
 				dailyFat: 55
 			});
+		});
+	});
+
+	describe("delete", () => {
+		it("should remove a given user from the database", async () => {
+			const user = await Users.createUser(testUser);
+
+			let users = await db("users");
+
+			expect(users).toHaveLength(1);
+
+			await Users.deleteUser(user.user_id);
+
+			users = await db("users");
+			expect(users).toHaveLength(0);
 		});
 	});
 });
