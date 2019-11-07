@@ -1,5 +1,5 @@
 const db = require("../data/dbConfig.js");
-const { calculateMacros } = require("./model-helpers");
+const { calculateMacros } = require("../helpers/calculateMacros");
 
 module.exports = {
 	findUserById,
@@ -9,7 +9,25 @@ module.exports = {
 	getCurrentUser
 };
 
-function updateUser(user_id, updates) {}
+async function updateUser(user_id, updates) {
+	await db("users")
+		.where({ user_id })
+		.update(updates);
+
+	const updatedUser = await db("users")
+		.where({ user_id })
+		.first();
+
+	const userMacros = calculateMacros(updatedUser);
+
+	await db("users")
+		.where({ user_id })
+		.update({ user_macros: JSON.stringify(userMacros) });
+
+	return db("users")
+		.where({ user_id })
+		.first();
+}
 
 function deleteUser(user_id) {}
 
@@ -17,12 +35,15 @@ async function createUser(user) {
 	const userMacros = calculateMacros(user);
 	const finalUser = { ...user, user_macros: JSON.stringify(userMacros) };
 
-	const newUser = await db("users").insert(finalUser);
+	const [id] = await db("users").insert(finalUser, "id");
 
-	return newUser;
+	return db("users")
+		.where({ user_id: id })
+		.first();
 }
 
 function getCurrentUser() {}
+
 function findUserById(user_id) {
 	return db("users")
 		.where({ user_id })

@@ -1,0 +1,94 @@
+const request = require("supertest");
+
+const Users = require("./user-model");
+const db = require("../data/dbConfig");
+
+it("should be running on testing env", () => {
+	expect(process.env.DB_ENV).toBe("testing");
+});
+
+let testUser = {
+	username: "testwoman",
+	password: "test",
+	email: "testwoman@gmail.com",
+	gender: "f",
+	name: "test woman",
+	activity_lvl: "1-2 days",
+	goal: "moderate weight loss",
+	height: "5'10",
+	age: 27,
+	current_weight: 151
+};
+
+describe("users model tests", () => {
+	beforeEach(async () => {
+		await db("users").truncate();
+	});
+
+	describe("insert", () => {
+		it("should add user to database", async () => {
+			let users = await db("users");
+			expect(users).toHaveLength(0);
+
+			const user = await Users.createUser(testUser);
+
+			users = await db("users");
+			expect(users).toHaveLength(1);
+		});
+
+		it("should add proper user data to database", async () => {
+			let user = await Users.createUser(testUser);
+
+			expect(user.email).toEqual(testUser.email);
+		});
+
+		it("should calculate macros properly", async () => {
+			let user = await Users.createUser(testUser);
+
+			expect(JSON.parse(user.user_macros)).toEqual({
+				dailyCalories: 1775,
+				dailyProtein: 133,
+				dailyCarbs: 177,
+				dailyFat: 58
+			});
+		});
+	});
+
+	describe("update", () => {
+		it("should update user", async () => {
+			const user = await Users.createUser(testUser);
+			expect(user.name).toBe("test woman");
+
+			const updates = {
+				name: "updatedUser",
+				email: "updatedEmail@gmail.com"
+			};
+
+			const updatedUser = await Users.updateUser(user.user_id, updates);
+			expect(updatedUser.name).toBe("updatedUser");
+			expect(updatedUser.email).toBe("updatedEmail@gmail.com");
+		});
+
+		it("should update user macros accurately", async () => {
+			const user = await Users.createUser(testUser);
+			expect(JSON.parse(user.user_macros)).toEqual({
+				dailyCalories: 1775,
+				dailyProtein: 133,
+				dailyCarbs: 177,
+				dailyFat: 58
+			});
+
+			const updates = {
+				height: "4'5"
+			};
+
+			const updatedUser = await Users.updateUser(user.user_id, updates);
+			expect(JSON.parse(updatedUser.user_macros)).toEqual({
+				dailyCalories: 1682,
+				dailyProtein: 126,
+				dailyCarbs: 168,
+				dailyFat: 55
+			});
+		});
+	});
+});
