@@ -1,5 +1,6 @@
 const db = require("../data/dbConfig.js");
-const { calculateMacros } = require("../helpers/calculateMacros");
+const calculateMacros = require("../helpers/calculateMacros");
+const calculateMealMacros = require("../helpers/calculateMealMacros");
 
 module.exports = {
 	findUserById,
@@ -17,8 +18,15 @@ async function updateUser(user_id, updates) {
 	let updatedUser = { ...user, ...updates };
 
 	const userMacros = JSON.stringify(calculateMacros(updatedUser));
+	const mealMacros = JSON.stringify(
+		calculateMealMacros(calculateMacros(updatedUser), updatedUser.meal_plan)
+	);
 
-	updatedUser = { ...updatedUser, user_macros: userMacros };
+	updatedUser = {
+		...updatedUser,
+		user_macros: userMacros,
+		meal_macros: mealMacros
+	};
 
 	await db("users")
 		.where({ user_id })
@@ -37,7 +45,12 @@ async function deleteUser(user_id) {
 
 async function createUser(user) {
 	const userMacros = calculateMacros(user);
-	const finalUser = { ...user, user_macros: JSON.stringify(userMacros) };
+	const mealMacros = calculateMealMacros(userMacros, user.meal_plan);
+	const finalUser = {
+		...user,
+		user_macros: JSON.stringify(userMacros),
+		meal_macros: JSON.stringify(mealMacros)
+	};
 
 	const [id] = await db("users").insert(finalUser, "id");
 

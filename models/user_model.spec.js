@@ -15,7 +15,8 @@ let testUser = {
 	goal: "moderate weight loss",
 	height: "5'10",
 	age: 27,
-	current_weight: 151
+	current_weight: 151,
+	meal_plan: "3 meals a day"
 };
 
 describe("users model tests", () => {
@@ -48,6 +49,16 @@ describe("users model tests", () => {
 				dailyProtein: 133,
 				dailyCarbs: 177,
 				dailyFat: 58
+			});
+		});
+
+		it("should calculate meal macros properly", async () => {
+			let user = await Users.createUser(testUser);
+
+			expect(JSON.parse(user.meal_macros)).toEqual({
+				proteinPerMeal: 44,
+				carbsPerMeal: 59,
+				fatPerMeal: 19
 			});
 		});
 	});
@@ -86,6 +97,29 @@ describe("users model tests", () => {
 				dailyProtein: 126,
 				dailyCarbs: 168,
 				dailyFat: 55
+			});
+		});
+
+		it("should update user meal macros accurately", async () => {
+			const user = await Users.createUser(testUser);
+			expect(JSON.parse(user.meal_macros)).toEqual({
+				proteinPerMeal: 44,
+				carbsPerMeal: 59,
+				fatPerMeal: 19
+			});
+
+			const updates = {
+				meal_plan: "3 meals and 2 snacks a day"
+			};
+			const updatedUser = await Users.updateUser(user.user_id, updates);
+
+			expect(JSON.parse(updatedUser.meal_macros)).toEqual({
+				proteinPerMeal: 32,
+				carbsPerMeal: 44,
+				fatPerMeal: 14,
+				proteinPerSnack: 16,
+				carbsPerSnack: 22,
+				fatPerSnack: 7
 			});
 		});
 	});

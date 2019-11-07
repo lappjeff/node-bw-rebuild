@@ -2,7 +2,7 @@ const router = require("express").Router();
 
 const Users = require("../../models/user-model");
 
-const { validateUser } = require("../../helpers/user-validator");
+const validateUser = require("../../helpers/user-validator");
 router.post("/", async (req, res) => {
 	try {
 		validateUser(req.body);

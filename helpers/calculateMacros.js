@@ -1,8 +1,6 @@
 const validators = require("./user-validator");
 
-module.exports = {
-	calculateMacros
-};
+module.exports = calculateMacros;
 
 function calculateMacros(user) {
 	const bmrFormulas = {
