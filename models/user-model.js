@@ -1,5 +1,6 @@
 const db = require("../data/dbConfig.js");
-const  calculateMacros  = require("../helpers/calculateMacros");
+const calculateMacros = require("../helpers/calculateMacros");
+const calculateMealMacros = require("../helpers/calculateMealMacros");
 
 module.exports = {
 	findUserById,
@@ -36,8 +37,12 @@ async function deleteUser(user_id) {
 
 async function createUser(user) {
 	const userMacros = calculateMacros(user);
-	const 
-	const finalUser = { ...user, user_macros: JSON.stringify(userMacros) };
+	const mealMacros = calculateMealMacros(userMacros, user.meal_plan);
+	const finalUser = {
+		...user,
+		user_macros: JSON.stringify(userMacros),
+		meal_macros: JSON.stringify(mealMacros)
+	};
 
 	const [id] = await db("users").insert(finalUser, "id");
 

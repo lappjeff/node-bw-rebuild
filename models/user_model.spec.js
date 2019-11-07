@@ -15,7 +15,8 @@ let testUser = {
 	goal: "moderate weight loss",
 	height: "5'10",
 	age: 27,
-	current_weight: 151
+	current_weight: 151,
+	meal_plan: "3 meals a day"
 };
 
 describe("users model tests", () => {
@@ -48,6 +49,16 @@ describe("users model tests", () => {
 				dailyProtein: 133,
 				dailyCarbs: 177,
 				dailyFat: 58
+			});
+		});
+
+		it("should calculate meal macros properly", async () => {
+			let user = await Users.createUser(testUser);
+
+			expect(JSON.parse(user.meal_macros)).toEqual({
+				proteinPerMeal: 44,
+				carbsPerMeal: 59,
+				fatPerMeal: 19
 			});
 		});
 	});
