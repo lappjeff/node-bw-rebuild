@@ -1,4 +1,4 @@
-module.exports = { validateUser };
+module.exports = validateUser;
 
 function validateUser(user) {
 	const errors = [];

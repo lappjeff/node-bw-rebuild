@@ -1,6 +1,6 @@
-const { calculateMacros } = require("./calculateMacros");
+const calculateMacros = require("./calculateMacros");
 const calculateMealMacros = require("./calculateMealMacros");
-const { validateUser } = require("./user-validator");
+const validateUser = require("./user-validator");
 
 it("should calculate and return accurate macros", () => {
 	const testUser = {
