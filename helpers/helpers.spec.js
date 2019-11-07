@@ -10,12 +10,22 @@ it("should calculate and return accurate macros", () => {
 		current_weight: 151
 	};
 
-	const macros = calculateMacros(testUser);
+	let macros = calculateMacros(testUser);
 
 	expect(macros).toEqual({
 		dailyCalories: 1775,
 		dailyProtein: 133,
 		dailyCarbs: 177,
 		dailyFat: 58
+	});
+
+	testUser.height = "4'5";
+	macros = calculateMacros(testUser);
+
+	expect(macros).toEqual({
+		dailyCalories: 1682,
+		dailyProtein: 126,
+		dailyCarbs: 168,
+		dailyFat: 55
 	});
 });
