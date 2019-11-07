@@ -99,6 +99,29 @@ describe("users model tests", () => {
 				dailyFat: 55
 			});
 		});
+
+		it("should update user meal macros accurately", async () => {
+			const user = await Users.createUser(testUser);
+			expect(JSON.parse(user.meal_macros)).toEqual({
+				proteinPerMeal: 44,
+				carbsPerMeal: 59,
+				fatPerMeal: 19
+			});
+
+			const updates = {
+				meal_plan: "3 meals and 2 snacks a day"
+			};
+			const updatedUser = await Users.updateUser(user.user_id, updates);
+
+			expect(JSON.parse(updatedUser.meal_macros)).toEqual({
+				proteinPerMeal: 32,
+				carbsPerMeal: 44,
+				fatPerMeal: 14,
+				proteinPerSnack: 16,
+				carbsPerSnack: 22,
+				fatPerSnack: 7
+			});
+		});
 	});
 
 	describe("delete", () => {

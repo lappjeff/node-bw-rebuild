@@ -18,7 +18,15 @@ async function updateUser(user_id, updates) {
 	let updatedUser = { ...user, ...updates };
 
 	const userMacros = JSON.stringify(calculateMacros(updatedUser));
-	updatedUser = { ...updatedUser, user_macros: userMacros };
+	const mealMacros = JSON.stringify(
+		calculateMealMacros(calculateMacros(updatedUser), updatedUser.meal_plan)
+	);
+
+	updatedUser = {
+		...updatedUser,
+		user_macros: userMacros,
+		meal_macros: mealMacros
+	};
 
 	await db("users")
 		.where({ user_id })

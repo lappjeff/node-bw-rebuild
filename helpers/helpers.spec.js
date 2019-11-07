@@ -78,7 +78,8 @@ describe("user data validator", () => {
 		goal: "moderate weight loss",
 		height: "5'10",
 		age: 27,
-		current_weight: 151
+		current_weight: 151,
+		meal_plan: "3 meals a day"
 	};
 
 	const invalidtestUser = {
