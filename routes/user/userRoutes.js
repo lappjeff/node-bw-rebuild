@@ -2,13 +2,15 @@ const router = require("express").Router();
 
 const Users = require("../../models/user-model");
 
+const { validateUser } = require("../../helpers/user-validator");
 router.post("/", async (req, res) => {
 	try {
+		validateUser(req.body);
 		const user = await Users.createUser(req.body);
 
 		res.status(201).json({ message: "User created", id: user });
-	} catch (error) {
-		res.status(500).json({ message: "User could not be created", error });
+	} catch (errors) {
+		res.status(500).json({ message: "User could not be created", errors });
 	}
 });
 
