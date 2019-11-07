@@ -41,22 +41,54 @@ describe("users model tests", () => {
 
 			expect(user.email).toEqual(testUser.email);
 		});
+
+		it("should calculate macros properly", async () => {
+			let user = await Users.createUser(testUser);
+
+			expect(JSON.parse(user.user_macros)).toEqual({
+				dailyCalories: 1775,
+				dailyProtein: 133,
+				dailyCarbs: 177,
+				dailyFat: 58
+			});
+		});
 	});
 
 	describe("update", () => {
 		it("should update user", async () => {
-			let user = await Users.createUser(testUser);
+			const user = await Users.createUser(testUser);
 			expect(user.name).toBe("test woman");
 
 			const updates = {
-				// current_weight: 155,
-				// height: "5'8",
-				// age: 57,
-				name: "updatedUser"
+				name: "updatedUser",
+				email: "updatedEmail@gmail.com"
 			};
 
-			let updatedUser = Users.updateUser(user.id, updates);
-			expect(updatedUser).toBe("updatedUser");
+			const updatedUser = await Users.updateUser(user.user_id, updates);
+			expect(updatedUser.name).toBe("updatedUser");
+			expect(updatedUser.email).toBe("updatedEmail@gmail.com");
+		});
+
+		it("should update user macros accurately", async () => {
+			const user = await Users.createUser(testUser);
+			expect(JSON.parse(user.user_macros)).toEqual({
+				dailyCalories: 1775,
+				dailyProtein: 133,
+				dailyCarbs: 177,
+				dailyFat: 58
+			});
+
+			const updates = {
+				height: "4'5"
+			};
+
+			const updatedUser = await Users.updateUser(user.user_id, updates);
+			expect(JSON.parse(updatedUser.user_macros)).toEqual({
+				dailyCalories: 1682,
+				dailyProtein: 126,
+				dailyCarbs: 168,
+				dailyFat: 55
+			});
 		});
 	});
 });
