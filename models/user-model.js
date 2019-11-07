@@ -17,7 +17,6 @@ async function updateUser(user_id, updates) {
 	let updatedUser = { ...user, ...updates };
 
 	const userMacros = JSON.stringify(calculateMacros(updatedUser));
-
 	updatedUser = { ...updatedUser, user_macros: userMacros };
 
 	await db("users")
