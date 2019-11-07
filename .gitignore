@@ -104,3 +104,4 @@ dist
 .tern-port
 data/dev.sqlite3
 data/test.sqlite3
+data/test.sqlite3-journal
