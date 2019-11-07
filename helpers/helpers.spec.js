@@ -1,4 +1,5 @@
 const { calculateMacros } = require("./calculateMacros");
+const calculateMealMacros = require("./calculateMealMacros");
 const { validateUser } = require("./user-validator");
 
 it("should calculate and return accurate macros", () => {
@@ -31,6 +32,41 @@ it("should calculate and return accurate macros", () => {
 	});
 });
 
+it("should split macros into a meal plan", () => {
+	const macros = {
+		dailyCalories: 1775,
+		dailyProtein: 133,
+		dailyCarbs: 177,
+		dailyFat: 58
+	};
+
+	let mealMacros = calculateMealMacros(macros, "4 meals a day");
+
+	expect(mealMacros).toEqual({
+		proteinPerMeal: 33,
+		carbsPerMeal: 44,
+		fatPerMeal: 14
+	});
+
+	mealMacros = calculateMealMacros(macros, "3 meals a day");
+
+	expect(mealMacros).toEqual({
+		proteinPerMeal: 44,
+		carbsPerMeal: 59,
+		fatPerMeal: 19
+	});
+
+	mealMacros = calculateMealMacros(macros, "3 meals and 2 snacks a day");
+
+	expect(mealMacros).toEqual({
+		proteinPerMeal: 32,
+		carbsPerMeal: 44,
+		fatPerMeal: 14,
+		proteinPerSnack: 16,
+		carbsPerSnack: 22,
+		fatPerSnack: 7
+	});
+});
 describe("user data validator", () => {
 	const validtestUser = {
 		username: "testwoman",
