@@ -10,19 +10,19 @@ module.exports = {
 };
 
 async function updateUser(user_id, updates) {
-	await db("users")
-		.where({ user_id })
-		.update(updates);
-
-	const updatedUser = await db("users")
+	const user = await db("users")
 		.where({ user_id })
 		.first();
 
-	const userMacros = calculateMacros(updatedUser);
+	let updatedUser = { ...user, ...updates };
+
+	const userMacros = JSON.stringify(calculateMacros(updatedUser));
+
+	updatedUser = { ...updatedUser, user_macros: userMacros };
 
 	await db("users")
 		.where({ user_id })
-		.update({ user_macros: JSON.stringify(userMacros) });
+		.update(updatedUser);
 
 	return db("users")
 		.where({ user_id })
