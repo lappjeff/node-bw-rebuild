@@ -3,7 +3,7 @@ const calculateMacros = require("../helpers/calculateMacros");
 const calculateMealMacros = require("../helpers/calculateMealMacros");
 
 module.exports = {
-	findUserById,
+	findByUsername,
 	updateUser,
 	deleteUser,
 	createUser,
@@ -61,6 +61,11 @@ async function createUser(user) {
 
 function getCurrentUser() {}
 
+function findByUsername(username) {
+	return db("users")
+		.where({ username })
+		.first();
+}
 function findUserById(user_id) {
 	return db("users")
 		.where({ user_id })

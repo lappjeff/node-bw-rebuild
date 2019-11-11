@@ -138,4 +138,15 @@ describe("users model tests", () => {
 			expect(users).toHaveLength(0);
 		});
 	});
+
+	describe("find by username", () => {
+		it("should find and return the proper user with username", async () => {
+			const newUser = await Users.createUser(testUser);
+
+			let user = await Users.findByUsername(newUser.username);
+
+			expect(user.user_id).toBe(newUser.user_id);
+			expect(user.username).toBe(newUser.username);
+		});
+	});
 });
