@@ -13,6 +13,8 @@ async function protectRoute(req, res, next) {
 			res.status(401).json({ message: "Invalid credentials " });
 		}
 	} else {
-        res.status(400).json(message: "Please provide valid username and password")
-    }
+		res
+			.status(400)
+			.json({ message: "Please provide valid username and password" });
+	}
 }
