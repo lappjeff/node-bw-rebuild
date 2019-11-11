@@ -1,5 +1,6 @@
 const Users = require("./user-model");
 const db = require("../data/dbConfig");
+const bcrypt = require("bcrypt");
 
 it("should be running on testing env", () => {
 	expect(process.env.DB_ENV).toBe("testing");
@@ -39,6 +40,9 @@ describe("users model tests", () => {
 			let user = await Users.createUser(testUser);
 
 			expect(user.email).toEqual(testUser.email);
+			expect(bcrypt.compareSync(testUser.password, user.password)).toEqual(
+				true
+			);
 		});
 
 		it("should calculate macros properly", async () => {

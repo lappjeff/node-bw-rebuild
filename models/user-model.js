@@ -1,7 +1,7 @@
 const db = require("../data/dbConfig.js");
 const calculateMacros = require("../helpers/calculateMacros");
 const calculateMealMacros = require("../helpers/calculateMealMacros");
-const bcrypt = require("bcrypt")
+const bcrypt = require("bcrypt");
 
 module.exports = {
 	findByUsername,
@@ -48,12 +48,12 @@ async function createUser(user) {
 	const userMacros = calculateMacros(user);
 	const mealMacros = calculateMealMacros(userMacros, user.meal_plan);
 
-	const salt = bcrypt.genSaltSync(8)
-	const passHash = bcrypt.hashSync(user.password, salt)
+	const salt = bcrypt.genSaltSync(8);
+	const passHash = bcrypt.hashSync(user.password, salt);
 
 	const finalUser = {
 		...user,
-		password: passHash
+		password: passHash,
 		user_macros: JSON.stringify(userMacros),
 		meal_macros: JSON.stringify(mealMacros)
 	};
