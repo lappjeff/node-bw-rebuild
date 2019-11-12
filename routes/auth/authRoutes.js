@@ -1,19 +1,14 @@
-const validateUser = require("../../helpers/user-validator");
-const Users = require("../../models/user-model");
 const generateToken = require("../../helpers/generateToken");
+const validateUser = require("../../helpers/user-validator");
+const verify = require("../../auth/verifyCredentials");
+const Users = require("../../models/user-model");
 const router = require("express").Router();
 
-router.post("/login", protected, async (req, res) => {
-	const { username, password } = req.body;
+router.post("/login", verify, async (req, res) => {
+	const user = req.user;
 
-	const user = await Users.findByUsername(username);
-
-	if (user) {
-		const token = generateToken(user);
-		res.status(200).json({ message: `Welcome ${username}`, token });
-	} else {
-		res.status(401).json({ message: "Invalid credentials" });
-	}
+	const token = generateToken(user);
+	res.status(200).json({ message: `Welcome ${user.username}`, token });
 });
 
 router.post("/register", async (req, res) => {
