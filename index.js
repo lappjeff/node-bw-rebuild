@@ -1,6 +1,4 @@
 const express = require("express");
-const knex = require("knex");
-const knexConfig = require("./knexfile");
 const userRouter = require("./routes/user/userRoutes.js");
 const authRouter = require("./routes/auth/authRoutes.js");
 
