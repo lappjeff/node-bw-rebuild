@@ -1,5 +1,4 @@
 const validateUser = require("../../helpers/user-validator");
-const protected = require("../../auth/protectRoute");
 const Users = require("../../models/user-model");
 const generateToken = require("../../helpers/generateToken");
 const router = require("express").Router();

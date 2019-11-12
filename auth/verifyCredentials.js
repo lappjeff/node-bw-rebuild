@@ -1,13 +1,14 @@
 const { findByUsername } = require("../models/user-model");
 const bcrypt = require("bcrypt");
-module.exports = protectRoute;
+module.exports = verifyCredentials;
 
-async function protectRoute(req, res, next) {
-	const { username, password } = req.headers;
+async function verifyCredentials(req, res, next) {
+	const { username, password } = req.body;
 
 	if (username && password) {
 		const user = await findByUsername(username);
 		if (user && bcrypt.compareSync(password, user.password)) {
+			req.user = user;
 			next();
 		} else {
 			res.status(401).json({ message: "Invalid credentials " });
