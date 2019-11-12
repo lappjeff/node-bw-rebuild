@@ -1,12 +1,14 @@
 const jwt = require("jsonwebtoken");
-const env = require("dotenv").config();
 
 const restrictEndpoint = (req, res, next) => {
 	const token = req.headers.authorization;
 
+	console.log("-----------------------------", process.env.TOKEN_SECRET);
 	if (token) {
-		jwt.verify(token, env.TOKEN_SECRET, (err, decodedToken) => {
+		jwt.verify(token, process.env.TOKEN_SECRET, (err, decodedToken) => {
 			if (err) {
+				console.log(err);
+
 				res.status(401).json({ message: "Invalid token" });
 			} else {
 				req.username = decodedToken.username;
