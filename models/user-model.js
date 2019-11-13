@@ -7,8 +7,7 @@ module.exports = {
 	findByUsername,
 	updateUser,
 	deleteUser,
-	createUser,
-	getCurrentUser
+	createUser
 };
 
 async function updateUser(user_id, updates) {
@@ -33,9 +32,7 @@ async function updateUser(user_id, updates) {
 		.where({ user_id })
 		.update(updatedUser);
 
-	return db("users")
-		.where({ user_id })
-		.first();
+	return findUserById(user_id);
 }
 
 async function deleteUser(user_id) {
@@ -60,20 +57,50 @@ async function createUser(user) {
 
 	const [id] = await db("users").insert(finalUser, "id");
 
-	return db("users")
-		.where({ user_id: id })
-		.first();
+	return findUserById(id);
 }
-
-function getCurrentUser() {}
 
 function findByUsername(username) {
 	return db("users")
 		.where({ username })
+		.select(
+			"user_id",
+			"username",
+			"email",
+			"gender",
+			"name",
+			"activity_lvl",
+			"goal",
+			"height",
+			"age",
+			"current_weight",
+			"user_macros",
+			"created_at",
+			"updated_at",
+			"meal_plan",
+			"meal_macros"
+		)
 		.first();
 }
 function findUserById(user_id) {
 	return db("users")
 		.where({ user_id })
+		.select(
+			"user_id",
+			"username",
+			"email",
+			"gender",
+			"name",
+			"activity_lvl",
+			"goal",
+			"height",
+			"age",
+			"current_weight",
+			"user_macros",
+			"created_at",
+			"updated_at",
+			"meal_plan",
+			"meal_macros"
+		)
 		.first();
 }
