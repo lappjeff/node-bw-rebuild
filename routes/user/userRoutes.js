@@ -1,10 +1,9 @@
 const router = require("express").Router();
 const Users = require("../../models/user-model");
 const verify = require("../../auth/verifyCredentials");
+const restrict = require("../../auth/restrictEndpoint");
 
-router.use(verify);
-
-router.delete("/delete", async (req, res) => {
+router.delete("/delete", verify, async (req, res) => {
 	try {
 		Users.deleteUser(req.user.user_id);
 		res.status(204).end();
@@ -13,7 +12,7 @@ router.delete("/delete", async (req, res) => {
 	}
 });
 
-router.put("/update", async (req, res) => {
+router.put("/update", verify, async (req, res) => {
 	try {
 		const updates = req.body;
 		Users.updateUser(req.user.user_id, updates);
@@ -24,4 +23,14 @@ router.put("/update", async (req, res) => {
 		res.status(500).json({ message: "User could not be updated", error: err });
 	}
 });
+
+router.get("/currentuser", restrict, async (req, res) => {
+	try {
+		const user = await Users.findByUsername(req.username);
+		res.status(200).json({ currentUser: user });
+	} catch (err) {
+		res.status(500).json({ message: "User could not be fetched", error: err });
+	}
+});
+
 module.exports = router;
