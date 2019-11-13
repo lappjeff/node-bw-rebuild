@@ -3,7 +3,7 @@ const bcrypt = require("bcrypt");
 module.exports = verifyCredentials;
 
 async function verifyCredentials(req, res, next) {
-	const { username, password } = req.body;
+	const { username, password } = req.headers;
 
 	if (username && password) {
 		const user = await findByUsername(username);
