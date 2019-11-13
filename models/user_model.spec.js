@@ -40,9 +40,6 @@ describe("users model tests", () => {
 			let user = await Users.createUser(testUser);
 
 			expect(user.email).toEqual(testUser.email);
-			expect(bcrypt.compareSync(testUser.password, user.password)).toEqual(
-				true
-			);
 		});
 
 		it("should calculate macros properly", async () => {
